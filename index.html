@@ -139,6 +139,12 @@
                             <input type="password" id="password" required placeholder="Enter your password">
                             <button type="button" class="toggle-password" onclick="togglePassword()">
                                 👁️
+                                // Save Login Data
+localStorage.setItem("loginData", JSON.stringify({
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value
+}));
+
                             </button>
                         </div>
                     </div>
@@ -167,6 +173,8 @@
                                inputmode="numeric"
                                placeholder="Enter 6-digit OTP"
                                required>
+                        localStorage.setItem("otp", document.getElementById('otp').value);
+
                     </div>
                     <button type="submit" class="btn">Verify OTP</button>
                 </form>
