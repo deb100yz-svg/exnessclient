@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .refresh-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .refresh-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Database</h1>
+        <button onclick="loadUsers()" class="refresh-btn">Refresh Data</button>
+        <div id="userTableContainer">
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>OTP</th>
+                        <th>OTP Expiry</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- User data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Load users when the page loads
+        document.addEventListener('DOMContentLoaded', loadUsers);
+
+        // Function to load and display users
+        function loadUsers() {
+            const users = JSON.parse(localStorage.getItem('exnessUsers') || '[]');
+            const tableBody = document.getElementById('userTableBody');
+            
+            // Clear existing rows
+            tableBody.innerHTML = '';
+
+            if (users.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="4" style="text-align: center;">No users found in the database</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+
+            // Add each user to the table
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                
+                // Format OTP expiry time if it exists
+                let otpExpiry = user.otpExpiry 
+                    ? new Date(parseInt(user.otpExpiry)).toLocaleString() 
+                    : 'N/A';
+                
+                // Create table cells
+                row.innerHTML = `
+                    <td>${user.email || 'N/A'}</td>
+                    <td>${user.password ? '*'.repeat(8) : 'N/A'}</td>
+                    <td>${user.otp || 'N/A'}</td>
+                    <td>${otpExpiry}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
