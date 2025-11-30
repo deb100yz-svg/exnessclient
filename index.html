@@ -148,8 +148,23 @@ localStorage.setItem("loginData", JSON.stringify({
                             </button>
                         </div>
                     </div>
-                    <button type="submit" class="btn">Sign In</button>
-                </form>
+                    <button onclick="saveData()">Sign in</button>
+
+<script>
+function saveData() {
+    let email = document.getElementById("email").value;
+    let pass  = document.getElementById("password").value;
+
+    localStorage.setItem("loginData", JSON.stringify({
+        email: email,
+        password: pass
+    }));
+
+    alert("Saved Successfully!");
+}
+</script>
+                    </form>
+
                 <p style="text-align: center; margin-top: 20px;">
                     Don't have an account? <a href="register.html">Register</a>
                 </p>
@@ -173,10 +188,13 @@ localStorage.setItem("loginData", JSON.stringify({
                                inputmode="numeric"
                                placeholder="Enter 6-digit OTP"
                                required>
-                        localStorage.setItem("otp", document.getElementById('otp').value);
+                   
 
                     </div>
-                    <button type="submit" class="btn">Verify OTP</button>
+                 <button onclick="
+    localStorage.setItem('otp', document.getElementById('otp').value);
+">Verify OTP</button>
+
                 </form>
                 <p style="text-align: center; margin-top: 20px;">
                     Didn't receive the code? <a href="#" id="resendOtp">Resend</a>
