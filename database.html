@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Database Storage</title>
+<title>Database Viewer</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -11,6 +11,7 @@
     }
     h1 {
         text-align: center;
+        margin-bottom: 20px;
     }
     .box {
         background: white;
@@ -23,41 +24,41 @@
         background: #eee;
         padding: 10px;
         border-radius: 5px;
-        overflow-x: auto;
+        white-space: pre-wrap;
     }
 </style>
 </head>
 <body>
 
-<h1>Stored Database</h1>
+<h1>Website Database (Local Storage)</h1>
 
 <div class="box">
     <h2>Login Data</h2>
-    <pre id="loginData"></pre>
+    <pre id="loginBox"></pre>
 </div>
 
 <div class="box">
     <h2>OTP Data</h2>
-    <pre id="otpData"></pre>
+    <pre id="otpBox"></pre>
 </div>
 
 <div class="box">
     <h2>Registration Data</h2>
-    <pre id="registerData"></pre>
+    <pre id="regBox"></pre>
 </div>
 
 <script>
 // LOGIN DATA
-document.getElementById("loginData").textContent =
-    localStorage.getItem("loginData") || "No login data stored";
+let login = localStorage.getItem("loginData");
+document.getElementById("loginBox").textContent = login ? login : "No login data found";
 
 // OTP DATA
-document.getElementById("otpData").textContent =
-    localStorage.getItem("otp") || "No OTP stored";
+let otp = localStorage.getItem("otp");
+document.getElementById("otpBox").textContent = otp ? otp : "No OTP stored";
 
-// REGISTER DATA
-document.getElementById("registerData").textContent =
-    localStorage.getItem("registerData") || "No registration data stored";
+// REGISTRATION DATA
+let reg = localStorage.getItem("registerData");
+document.getElementById("regBox").textContent = reg ? reg : "No registration data found";
 </script>
 
 </body>
