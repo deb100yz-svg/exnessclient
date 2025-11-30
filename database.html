@@ -1,224 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Credentials Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f0f2f5;
-        }
-        h1 {
-            color: #1a73e8;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        th {
-            background-color: #1a73e8;
-            color: white;
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-        }
-        tr:hover {
-            background-color: #f8f9fa;
-        }
-        .password {
-            font-family: monospace;
-            letter-spacing: 1px;
-            color: #666;
-        }
-        .otp {
-            font-family: monospace;
-            font-weight: bold;
-            color: #d32f2f;
-            letter-spacing: 2px;
-        }
-        .refresh-btn {
-            display: block;
-            width: 200px;
-            margin: 0 auto 25px;
-            padding: 12px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .refresh-btn:hover {
-            background-color: #1557b0;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .no-data {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            font-style: italic;
-            background: #f9f9f9;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Database Storage</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+    }
+    .box {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    pre {
+        background: #eee;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>User Credentials Database</h1>
-        <button onclick="loadUserData()" class="refresh-btn">🔄 Refresh Data</button>
-        
-        <div id="userTableContainer">
-            <table id="userTable">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Password</th>
-                        <th>OTP</th>
-                    </tr>
-                </thead>
-                <tbody id="userTableBody">
-                    <tr>
-                        <td colspan="3" class="no-data">Loading user data...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <script>
-        // Function to safely parse JSON
-        function safeParse(jsonString) {
-            try {
-                return JSON.parse(jsonString);
-            } catch (e) {
-                return null;
-            }
-        }
+<h1>Stored Database</h1>
 
-        // Function to load and display user data
-        function loadUserData() {
-            const tableBody = document.getElementById('userTableBody');
-            tableBody.innerHTML = '<tr><td colspan="3" class="no-data">Loading...</td></tr>';
+<div class="box">
+    <h2>Login Data</h2>
+    <pre id="loginData"></pre>
+</div>
 
-            // Get all users from localStorage
-            let users = [];
-            const exnessUsers = localStorage.getItem('exnessUsers');
-            
-            if (exnessUsers) {
-                try {
-                    const parsedUsers = JSON.parse(exnessUsers);
-                    if (Array.isArray(parsedUsers)) {
-                        users = parsedUsers;
-                    }
-                } catch (e) {
-                    console.error('Error parsing exnessUsers:', e);
-                }
-            }
+<div class="box">
+    <h2>OTP Data</h2>
+    <pre id="otpData"></pre>
+</div>
 
-            // If no users found in exnessUsers, try to get current user
-            if (users.length === 0) {
-                const currentUser = localStorage.getItem('currentUser');
-                if (currentUser) {
-                    try {
-                        const user = JSON.parse(currentUser);
-                        if (user.email) {
-                            users = [user];
-                        }
-                    } catch (e) {
-                        console.error('Error parsing currentUser:', e);
-                    }
-                }
-            }
+<div class="box">
+    <h2>Registration Data</h2>
+    <pre id="registerData"></pre>
+</div>
 
-            // Clear the table
-            tableBody.innerHTML = '';
+<script>
+// LOGIN DATA
+document.getElementById("loginData").textContent =
+    localStorage.getItem("loginData") || "No login data stored";
 
-            if (users.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="3" class="no-data">
-                            No user data found in localStorage.<br>
-                            Try logging in first to store user data.
-                        </td>
-                    </tr>`;
-                return;
-            }
+// OTP DATA
+document.getElementById("otpData").textContent =
+    localStorage.getItem("otp") || "No OTP stored";
 
-            // Display all users
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                
-                // Create password display (masked)
-                let passwordDisplay = '••••••••';
-                if (user.password) {
-                    const pwd = String(user.password);
-                    if (pwd.length > 0) {
-                        passwordDisplay = '•'.repeat(Math.min(8, pwd.length));
-                    }
-                }
+// REGISTER DATA
+document.getElementById("registerData").textContent =
+    localStorage.getItem("registerData") || "No registration data stored";
+</script>
 
-                // Create OTP display
-                let otpDisplay = user.otp || 'N/A';
-                if (user.otpExpiry) {
-                    const expiryTime = new Date(parseInt(user.otpExpiry));
-                    const now = new Date();
-                    if (now > expiryTime) {
-                        otpDisplay += ' (Expired)';
-                    } else {
-                        otpDisplay += ` (Expires: ${expiryTime.toLocaleTimeString()})`;
-                    }
-                }
-
-                row.innerHTML = `
-                    <td>${user.email || 'N/A'}</td>
-                    <td class="password" title="Click to show" style="cursor: pointer;" 
-                        onclick="this.textContent = this.textContent === '••••••••' ? '${user.password || ''}' : '••••••••'">
-                        ${passwordDisplay}
-                    </td>
-                    <td class="otp">${otpDisplay}</td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Add click handler for password visibility toggle
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('password') && e.target.title === 'Click to show') {
-                const pwd = e.target.getAttribute('data-pwd');
-                if (pwd) {
-                    e.target.textContent = e.target.textContent === '••••••••' ? pwd : '••••••••';
-                }
-            }
-        });
-
-        // Load data when page loads
-        document.addEventListener('DOMContentLoaded', loadUserData);
-    </script>
 </body>
 </html>
