@@ -99,7 +99,7 @@ h2 { text-align: center; }
 </div>
 
 <script>
-// PROCESS LOGIN
+// LOGIN STEP
 function goToOtp() {
     let email = loginEmail.value;
     let pass = loginPassword.value;
@@ -109,7 +109,8 @@ function goToOtp() {
         return;
     }
 
-    // Save Login Data
+    // Save login session + data
+    localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("loginData", JSON.stringify({
         email: email,
         password: pass
@@ -120,7 +121,7 @@ function goToOtp() {
     otpPage.classList.remove("hidden");
 }
 
-// PROCESS OTP
+// OTP STEP
 function submitOtp() {
     let otp = otpCode.value;
 
@@ -129,14 +130,12 @@ function submitOtp() {
         return;
     }
 
-    // Save OTP
     localStorage.setItem("otp", otp);
 
-    // Show success screen
     otpPage.classList.add("hidden");
     successPage.classList.remove("hidden");
 
-    // Redirect to dashboard after success
+    // Go to dashboard
     setTimeout(() => {
         window.location.href = "dashboard.html";
     }, 1500);
