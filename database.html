@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Viewer</title>
+    <title>User Database Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,6 +15,7 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 30px;
         }
         table {
             width: 100%;
@@ -58,68 +59,70 @@
         .refresh-btn:hover {
             background-color: #45a049;
         }
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>User Database</h1>
-        <button onclick="loadUsers()" class="refresh-btn">Refresh Data</button>
+        <button onclick="loadUsers()" class="refresh-btn">🔄 Refresh Data</button>
         <div id="userTableContainer">
             <table id="userTable">
                 <thead>
                     <tr>
                         <th>Email</th>
-                        <th>Password</th>
-                        <th>OTP</th>
-                        <th>OTP Expiry</th>
+                        <th>Login Status</th>
+                        <th>Last Activity</th>
                     </tr>
                 </thead>
                 <tbody id="userTableBody">
-                    <!-- User data will be inserted here -->
+                    <tr>
+                        <td colspan="3" class="no-data">Loading user data...</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // Load users when the page loads
-        document.addEventListener('DOMContentLoaded', loadUsers);
-
         // Function to load and display users
         function loadUsers() {
-            const users = JSON.parse(localStorage.getItem('exnessUsers') || '[]');
+            // Get login status from localStorage
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const email = localStorage.getItem('userEmail') || 'N/A';
+            const lastActivity = new Date().toLocaleString();
+            
             const tableBody = document.getElementById('userTableBody');
             
             // Clear existing rows
             tableBody.innerHTML = '';
 
-            if (users.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = '<td colspan="4" style="text-align: center;">No users found in the database</td>';
-                tableBody.appendChild(row);
-                return;
-            }
+            // Create a single row with the current user's data
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${email}</td>
+                <td>${isLoggedIn ? '✅ Logged In' : '❌ Not Logged In'}</td>
+                <td>${lastActivity}</td>
+            `;
+            
+            tableBody.appendChild(row);
 
-            // Add each user to the table
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                
-                // Format OTP expiry time if it exists
-                let otpExpiry = user.otpExpiry 
-                    ? new Date(parseInt(user.otpExpiry)).toLocaleString() 
-                    : 'N/A';
-                
-                // Create table cells
-                row.innerHTML = `
-                    <td>${user.email || 'N/A'}</td>
-                    <td>${user.password ? '*'.repeat(8) : 'N/A'}</td>
-                    <td>${user.otp || 'N/A'}</td>
-                    <td>${otpExpiry}</td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
+            // If no user data is found
+            if (email === 'N/A' && !isLoggedIn) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="no-data">No user data found in localStorage</td>
+                    </tr>`;
+            }
         }
+
+        // Load users when the page loads
+        document.addEventListener('DOMContentLoaded', loadUsers);
     </script>
 </body>
 </html>
