@@ -123,7 +123,16 @@
                 <input type="password" id="password" required>
             </div>
             
-            <button type="submit">Create Account</button>
+            
+            <button onclick="saveData()">Create an Account</button>
+            <button onclick="saveData()">Submit</button>
+            localStorage.setItem("registerData", JSON.stringify({
+    fullName: document.getElementById('fullName').value,
+    mobile: document.getElementById('mobile').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value
+}));
+
         </form>
         
         <div class="login-link">
